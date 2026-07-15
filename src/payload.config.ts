@@ -28,6 +28,19 @@ import { PermalinkSettings } from './globals/PermalinkSettings'
 import { Popups } from './collections/Popups'
 import { ActivityLog } from './collections/ActivityLog'
 import { PageTemplates } from './collections/PageTemplates'
+import { Products } from './collections/Products'
+import { ProductCategories } from './collections/ProductCategories'
+import { Events } from './collections/Events'
+import { Orders } from './collections/Orders'
+import { Customers } from './collections/Customers'
+import { Reviews } from './collections/Reviews'
+import { DiscountCodes } from './collections/DiscountCodes'
+import { EmailTemplates } from './collections/EmailTemplates'
+import { AbandonedCarts } from './collections/AbandonedCarts'
+import { DataRequests } from './collections/DataRequests'
+import { ShopSettings } from './globals/ShopSettings'
+import { AISettings } from './globals/AISettings'
+import { seedEmailTemplates } from './seed/emailTemplates'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -95,11 +108,25 @@ export default buildConfig({
     PageTemplates,
     // Marketing
     Popups,
+    // Shop
+    Products,
+    ProductCategories,
+    Events,
+    Orders,
+    Customers,
+    Reviews,
+    DiscountCodes,
+    EmailTemplates,
+    AbandonedCarts,
+    DataRequests,
     // System
     Users,
     ActivityLog,
   ],
   cors: [getServerSideURL()].filter(Boolean),
+  onInit: async (payload) => {
+    await seedEmailTemplates(payload)
+  },
   plugins: [
     ...plugins,
     vercelBlobStorage({
@@ -130,6 +157,10 @@ export default buildConfig({
     CodeInjection,
     MaintenanceMode,
     MailSettings,
+    // Shop
+    ShopSettings,
+    // AI
+    AISettings,
     // System
     CMSBranding,
   ],

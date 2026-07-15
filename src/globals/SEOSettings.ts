@@ -732,7 +732,8 @@ export const SEOSettings: GlobalConfig = {
                       fields: [
                         { name: 'pages', type: 'checkbox', label: 'Pages', defaultValue: true, admin: { width: '25%' } },
                         { name: 'posts', type: 'checkbox', label: 'Posts', defaultValue: true, admin: { width: '25%' } },
-
+                        { name: 'products', type: 'checkbox', label: 'Products', defaultValue: true, admin: { width: '25%' } },
+                        { name: 'events', type: 'checkbox', label: 'Events', defaultValue: true, admin: { width: '25%' } },
                       ],
                     },
                   ],
@@ -775,7 +776,8 @@ export const SEOSettings: GlobalConfig = {
                       fields: [
                         { name: 'pages', type: 'checkbox', label: 'Pages', defaultValue: true, admin: { width: '25%' } },
                         { name: 'posts', type: 'checkbox', label: 'Posts', defaultValue: true, admin: { width: '25%' } },
-
+                        { name: 'products', type: 'checkbox', label: 'Products', defaultValue: true, admin: { width: '25%' } },
+                        { name: 'events', type: 'checkbox', label: 'Events', defaultValue: true, admin: { width: '25%' } },
                       ],
                     },
                   ],

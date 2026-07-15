@@ -3,6 +3,9 @@ import React from 'react'
 
 import { HeaderThemeProvider } from './HeaderTheme'
 import { ThemeProvider } from './Theme'
+import { AuthProvider } from './Auth'
+import { CartProvider } from '@/components/CartProvider'
+import { WishlistProvider } from '@/components/WishlistProvider'
 
 export const Providers: React.FC<{
   children: React.ReactNode
@@ -10,7 +13,11 @@ export const Providers: React.FC<{
   return (
     <ThemeProvider>
       <HeaderThemeProvider>
-        {children}
+        <AuthProvider>
+          <CartProvider>
+            <WishlistProvider>{children}</WishlistProvider>
+          </CartProvider>
+        </AuthProvider>
       </HeaderThemeProvider>
     </ThemeProvider>
   )

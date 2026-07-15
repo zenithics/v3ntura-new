@@ -26,6 +26,10 @@ import { VideoEmbed } from '../blocks/VideoEmbed/config'
 import { MapEmbed } from '../blocks/MapEmbed/config'
 import { Embed } from '../blocks/Embed/config'
 import { Timeline } from '../blocks/Timeline/config'
+import { ProductGrid } from '../blocks/ProductGrid/config'
+import { FeaturedProducts } from '../blocks/FeaturedProducts/config'
+import { CartSummary } from '../blocks/CartSummary/config'
+import { EventGrid } from '../blocks/EventGrid/config'
 import { hero } from '../heros/config'
 
 export const PageTemplates: CollectionConfig = {
@@ -129,6 +133,10 @@ export const PageTemplates: CollectionConfig = {
                 Timeline,
                 Banner,
                 Code,
+                ProductGrid,
+                FeaturedProducts,
+                CartSummary,
+                EventGrid,
               ],
               admin: {
                 components: {

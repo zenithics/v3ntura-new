@@ -2,11 +2,13 @@ import type { CollectionAfterChangeHook } from 'payload'
 import { submitToGoogleIndexing } from '@/utilities/googleIndexing'
 import { submitToIndexNow } from '@/utilities/indexNow'
 
-type CollectionType = 'pages' | 'posts'
+type CollectionType = 'pages' | 'posts' | 'products' | 'events'
 
 const urlPatterns: Record<CollectionType, (slug: string) => string> = {
   pages: (slug) => (slug === 'home' ? '/' : `/${slug}`),
   posts: (slug) => `/posts/${slug}`,
+  products: (slug) => `/shop/${slug}`,
+  events: (slug) => `/events/${slug}`,
 }
 
 export function createIndexingHook(collectionType: CollectionType): CollectionAfterChangeHook {

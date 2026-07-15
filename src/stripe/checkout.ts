@@ -3,7 +3,7 @@ import type { CartItem } from '@/components/CartProvider'
 
 // Re-export a lazy stripe client for webhook signature verification
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', {
-  apiVersion: '2025-02-24.acacia',
+  apiVersion: '2026-06-24.dahlia',
 })
 
 interface CheckoutOptions {
@@ -36,7 +36,7 @@ async function getStripeClient(): Promise<{ stripe: Stripe; currency: string }> 
 
     if (secretKey) {
       return {
-        stripe: new Stripe(secretKey, { apiVersion: '2025-02-24.acacia' }),
+        stripe: new Stripe(secretKey, { apiVersion: '2026-06-24.dahlia' }),
         currency,
       }
     }
@@ -48,7 +48,7 @@ async function getStripeClient(): Promise<{ stripe: Stripe; currency: string }> 
   const key = process.env.STRIPE_SECRET_KEY
   if (!key) throw new Error('Stripe secret key not configured in ShopSettings or STRIPE_SECRET_KEY env var')
   return {
-    stripe: new Stripe(key, { apiVersion: '2025-02-24.acacia' }),
+    stripe: new Stripe(key, { apiVersion: '2026-06-24.dahlia' }),
     currency: 'gbp',
   }
 }

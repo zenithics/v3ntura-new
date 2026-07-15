@@ -10,7 +10,6 @@ import { ReviewStars } from '@/components/Reviews/ReviewStars'
 import { RelatedProducts } from '@/components/RelatedProducts'
 import { UpsellProducts } from '@/components/UpsellProducts'
 import { getServerSideURL } from '@/utilities/getURL'
-import { getContentUrl, getPrefix } from '@/utilities/getContentUrl'
 import { productSchema } from '@/utilities/generateJsonLd'
 import { applyAdvancedSeo } from '@/utilities/buildSeoMeta'
 
@@ -68,11 +67,8 @@ export default async function ProductPage({ params }: Args) {
 
   const { average, count } = await getProductRating(product.id)
 
-  const [productPath, shopPrefix] = await Promise.all([
-    getContentUrl('products', slug),
-    getPrefix('products'),
-  ])
-  const productUrl = getServerSideURL() + productPath
+  const shopPrefix = '/shop'
+  const productUrl = getServerSideURL() + `${shopPrefix}/${slug}`
   const productImage =
     product.images?.[0]?.image && typeof product.images[0].image === 'object'
       ? (product.images[0].image as any).url

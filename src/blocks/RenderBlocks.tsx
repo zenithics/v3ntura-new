@@ -25,6 +25,10 @@ import { VideoEmbedBlock } from '@/blocks/VideoEmbed/Component'
 import { MapEmbedBlock } from '@/blocks/MapEmbed/Component'
 import { EmbedBlock } from '@/blocks/Embed/Component'
 import { TimelineBlock } from '@/blocks/Timeline/Component'
+import { ProductGridBlock } from '@/blocks/ProductGrid/Component'
+import { FeaturedProductsBlock } from '@/blocks/FeaturedProducts/Component'
+import { CartSummaryBlock } from '@/blocks/CartSummary/Component'
+import { EventGridBlock } from '@/blocks/EventGrid/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -50,6 +54,10 @@ const blockComponents = {
   mapEmbed: MapEmbedBlock,
   embed: EmbedBlock,
   timeline: TimelineBlock,
+  productGrid: ProductGridBlock,
+  featuredProducts: FeaturedProductsBlock,
+  cartSummary: CartSummaryBlock,
+  eventGrid: EventGridBlock,
 }
 
 export const RenderBlocks: React.FC<{

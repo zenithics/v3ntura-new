@@ -285,7 +285,7 @@ export async function handleCheckoutCompleted(
   session: Stripe.Checkout.Session,
   payload: Payload,
 ): Promise<void> {
-  const addr = session.shipping_details?.address
+  const addr = session.collected_information?.shipping_details?.address
   await createOrderFromPayment(
     {
       cartItems: JSON.parse(session.metadata?.cartItems || '[]'),
