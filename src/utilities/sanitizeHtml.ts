@@ -1,31 +1,56 @@
 /**
- * Basic HTML sanitiser — strips dangerous tags/attributes while
- * keeping common formatting elements used in Payload rich text.
+ * Sanitise rich text HTML content to prevent stored XSS.
+ * Strips dangerous tags and attributes from HTML strings.
+ *
+ * This is a lightweight server-side sanitiser. For full XSS prevention,
+ * React's JSX already escapes rendered content. This catches edge cases
+ * where rich text HTML is rendered with dangerouslySetInnerHTML.
  */
 
-const ALLOWED_TAGS = new Set([
-  'a', 'b', 'i', 'u', 'em', 'strong', 'p', 'br', 'ul', 'ol', 'li',
-  'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'span', 'div', 'img',
-  'blockquote', 'code', 'pre', 'hr', 'table', 'thead', 'tbody',
-  'tr', 'td', 'th', 'figure', 'figcaption', 'sup', 'sub', 'small',
-])
+// Dangerous URL schemes
+const DANGEROUS_SCHEMES = /^(javascript|data|vbscript):/i
 
-const ALLOWED_ATTRS = new Set([
-  'href', 'target', 'rel', 'src', 'alt', 'width', 'height',
-  'class', 'style', 'id', 'title',
-])
-
+/**
+ * Sanitise an HTML string.
+ * Removes script tags, event handlers, dangerous URLs, and disallowed tags.
+ */
 export function sanitizeHtml(html: string): string {
-  if (!html) return ''
+  if (!html || typeof html !== 'string') return ''
 
-  // Strip script/style tags and their content
-  let clean = html.replace(/<(script|style|iframe|object|embed|form|input|textarea|button)[^>]*>[\s\S]*?<\/\1>/gi, '')
-  // Remove self-closing versions
-  clean = clean.replace(/<(script|style|iframe|object|embed|form|input|textarea|button)[^>]*\/?>/gi, '')
-  // Remove event handlers
-  clean = clean.replace(/\s+on\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
-  // Remove javascript: urls
-  clean = clean.replace(/href\s*=\s*["']?\s*javascript:/gi, 'href="')
+  let sanitized = html
 
-  return clean
+  // Remove script tags and their content
+  sanitized = sanitized.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+
+  // Remove event handlers (onclick, onerror, onload, etc.)
+  sanitized = sanitized.replace(/\s+on\w+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+
+  // Remove style attributes that could contain expressions
+  sanitized = sanitized.replace(/\s+style\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+
+  // Remove dangerous URI schemes from href and src
+  sanitized = sanitized.replace(
+    /(href|src)\s*=\s*(?:"([^"]*)"|'([^']*)')/gi,
+    (match, attr, doubleQuoted, singleQuoted) => {
+      const url = doubleQuoted || singleQuoted || ''
+      if (DANGEROUS_SCHEMES.test(url.trim())) {
+        return `${attr}="#"`
+      }
+      return match
+    },
+  )
+
+  // Remove dangerous tags (with their content where applicable)
+  const dangerousTags = [
+    'iframe', 'object', 'embed', 'form', 'input', 'textarea',
+    'select', 'button', 'applet', 'meta', 'link', 'base',
+  ]
+  for (const tag of dangerousTags) {
+    const openClose = new RegExp(`<${tag}\\b[^>]*>[\\s\\S]*?<\\/${tag}>`, 'gi')
+    const selfClose = new RegExp(`<${tag}\\b[^>]*\\/?>`, 'gi')
+    sanitized = sanitized.replace(openClose, '')
+    sanitized = sanitized.replace(selfClose, '')
+  }
+
+  return sanitized
 }
